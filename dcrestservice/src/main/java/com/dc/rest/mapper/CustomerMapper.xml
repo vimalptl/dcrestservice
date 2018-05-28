@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dc.rest.mapper.CustomerMapper">
+
+   <resultMap id="customerMap" type="com.dc.rest.model.Customer">
+	<result property="id" column="CUST_ID" jdbcType="NUMERIC"/>
+    <result property="firstName" column="FIRST_NAME" jdbcType="VARCHAR"/>
+    <result property="lastName" column="LAST_NAME" jdbcType="VARCHAR"/>
+    <result property="company" column="company" jdbcType="VARCHAR"/>
+    <result property="addr1" column="addr1" jdbcType="VARCHAR"/>
+    <result property="addr2" column="addr2" jdbcType="VARCHAR"/>
+    <result property="city" column="city" jdbcType="VARCHAR"/>
+    <result property="state" column="state" jdbcType="VARCHAR"/>
+    <result property="zip" column="ZIP" jdbcType="VARCHAR"/>
+    <result property="country" column="COUNTRY" jdbcType="VARCHAR"/>
+    <result property="phone" column="PHONE" jdbcType="VARCHAR"/>
+    <result property="fax" column="FAX" jdbcType="VARCHAR"/>
+    <result property="email" column="EMAIL" jdbcType="VARCHAR"/>
+    <result property="createDt" column="CREATED_DATE" jdbcType="DATE"/>
+    <result property="createdByUser" column="USERID" jdbcType="VARCHAR"/>
+    <result property="idNumber" column="ID_NUMBER" jdbcType="VARCHAR"/>
+    <result property="idType" column="ID_TYPE" jdbcType="VARCHAR"/>
+    <result property="note" column="NOTE" jdbcType="VARCHAR"/>
+    <result property="dnr" column="DNR" jdbcType="NUMERIC"/>
+    <result property="swipeData" column="SWIPEDATA" jdbcType="VARCHAR"/>
+    <result property="imageFileLoc" column="IMGFILE" jdbcType="VARCHAR"/>
+  </resultMap>
+
+<select id="findByCustomerId" resultMap="customerMap" parameterType="Integer">
+		SELECT
+		  *
+		FROM
+			Customer
+		WHERE
+			CUST_ID=#{Value};
+	</select>
+
+
+
+</mapper>
