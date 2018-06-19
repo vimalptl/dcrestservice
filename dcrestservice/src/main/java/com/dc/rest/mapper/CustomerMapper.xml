@@ -28,15 +28,55 @@
     <result property="imageFileLoc" column="IMGFILE" jdbcType="VARCHAR"/>
   </resultMap>
 
-<select id="findByCustomerId" resultMap="customerMap" parameterType="Integer">
+	<resultMap id="customerDnr" type="com.dc.rest.model.CustomerDnr">
+        <result property="dnrId" column="KEYID"/>
+        <result property="customerId" column="CUSTOMERKEYID"/>
+        <result property="roomNbr" column="ROOM_NUMBER"/>
+        <result property="markingDate" column="MARKING_DT"/>
+        <result property="userId" column="CREATEDBY"/>
+        <result property="dnrInfo" column="DNRINFO"/>
+    </resultMap>
+
+
+	<select id="findByCustomerId" resultMap="customerMap" parameterType="Integer">
 		SELECT
 		  *
 		FROM
 			Customer
 		WHERE
-			CUST_ID=#{Value};
+			CUST_ID=#{custid};
 	</select>
 
+    <select id="getCustomerByName" resultMap="customerMap" parameterType="java.util.HashMap">
+        SELECT
+			*
+        FROM customer
+        WHERE 1=1
+        <if test="lastname != null">
+	    	and lower(Name_Last) like (#{lastName})
+	    </if>
+        <if test="firstname != null">	    
+ 	    	and lower(Name_first) like (#{firstName})
+ 	    </if>
+        <if test="sid != null">	   
+	 		and upper(Id_Number) like (#{sId})         
+	 	</if>
+	     order by cust_id;       	    
+    </select>
 
+
+
+    <select id="getCustomerDnrByCustomerId" resultMap="customerDnr" parameterType="java.lang.Integer">
+      SELECT KEYID, CUSTOMERKEYID, ROOM_NUMBER, MARKING_DT, CREATEDBY, DNRINFO FROM CUSTOMER_DNR
+      where CUSTOMERKEYID = #{value}
+ 		order by MARKING_DT DESC
+    </select> 
+
+    <insert id="addDnr" parameterType="com.dc.rest.model.CustomerDnr">
+			INSERT INTO CUSTOMER_DNR(CUSTOMERKEYID,ROOM_NUMBER,MARKING_DT,CREATEDBY,DNRINFO) VALUES (#customerId#,#roomNbr#,#markingDate#,#userId#,#dnrInfo#);
+			<selectKey resultType="Integer" order="AFTER">
+      			select LAST_INSERT_ID() AS customerId
+    		</selectKey>
+    </insert>  
 
 </mapper>
